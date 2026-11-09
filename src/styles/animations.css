@@ -1,0 +1,50 @@
+.cat-stage { --speed: 1; position: relative; width: min(60vw, 320px); }
+.cat {
+  display: block; width: 100%; background: none; border: 0; cursor: pointer;
+  transform-origin: 50% 100%; will-change: transform;
+  -webkit-tap-highlight-color: transparent;
+}
+.cat svg { width: 100%; height: auto; overflow: visible; display: block; }
+.cat.dancing { animation: dance calc(1.2s * var(--speed)) ease-in-out infinite; }
+.cat .head, .cat .arm, .cat .tail { transform-box: fill-box; will-change: transform; }
+.cat .head { transform-origin: 50% 90%; }
+.cat .arm { transform-origin: 50% 10%; }
+.cat .tail { transform-origin: 0% 100%; }
+.cat.dancing .head { animation: head-bob calc(.6s * var(--speed)) ease-in-out infinite alternate; }
+.cat.dancing .arm-left { animation: arm-left calc(.6s * var(--speed)) ease-in-out infinite alternate; }
+.cat.dancing .arm-right { animation: arm-right calc(.6s * var(--speed)) ease-in-out infinite alternate; }
+.cat.dancing .tail { animation: tail-wag calc(.5s * var(--speed)) ease-in-out infinite alternate; }
+.cat.paused * , .cat.paused { animation-play-state: paused; }
+.shadow {
+  width: 60%; height: 14px; margin: 4px auto 0; border-radius: 50%;
+  background: rgba(0,0,0,.3); filter: blur(4px);
+  animation: shadow-pulse calc(1.2s * var(--speed)) ease-in-out infinite;
+}
+.cat-stage:has(.paused) .shadow { animation-play-state: paused; }
+
+@keyframes dance {
+  0%   { transform: translateY(0) rotate(-6deg) scale(1, 1); }
+  25%  { transform: translateY(-40px) rotate(0deg) scale(.95, 1.08); }
+  50%  { transform: translateY(0) rotate(6deg) scale(1.08, .92); }
+  75%  { transform: translateY(-40px) rotate(0deg) scale(.95, 1.08); }
+  100% { transform: translateY(0) rotate(-6deg) scale(1, 1); }
+}
+@keyframes head-bob { from { transform: rotate(-8deg); } to { transform: rotate(8deg); } }
+@keyframes arm-left { from { transform: rotate(-20deg); } to { transform: rotate(-150deg); } }
+@keyframes arm-right { from { transform: rotate(20deg); } to { transform: rotate(150deg); } }
+@keyframes tail-wag { from { transform: rotate(-12deg); } to { transform: rotate(14deg); } }
+@keyframes shadow-pulse {
+  0%, 50%, 100% { transform: scaleX(1); opacity: .6; }
+  25%, 75% { transform: scaleX(.65); opacity: .3; }
+}
+
+@media (min-width: 768px) { .cat-stage { width: 340px; } }
+@media (min-width: 1200px) { .cat-stage { width: 400px; } }
+@media (max-width: 480px) {
+  .cat-stage { width: 70vw; }
+  .toggle-btn { width: 100%; }
+}
+@media (hover: none) { .toggle-btn:hover { transform: none; } }
+@media (prefers-reduced-motion: reduce) {
+  .cat.dancing, .cat.dancing * , .shadow { animation-duration: 3s !important; }
+}
